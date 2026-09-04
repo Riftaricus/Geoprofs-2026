@@ -15,21 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework import routers, serializers, viewsets
-
-class StatusSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = None
-        fields = ["is_online"]
-
-class StatusViewSet(viewsets.ModelViewSet):
-    queryset = [True]
-    serializer_class = StatusSerializer
-
-router = routers.DefaultRouter()
-router.register(r"status", StatusViewSet)
+from django.urls import path
 
 urlpatterns = [
-    path("", include("rest_framework.urls", namespace="rest_framework"))
+    path('admin/', admin.site.urls),
 ]
