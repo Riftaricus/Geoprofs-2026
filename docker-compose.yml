@@ -1,3 +1,7 @@
 include: 
-  - Backend/docker-compose.yml
-  - Frontend/docker-compose.yml
+  - path: Backend/docker-compose.yml
+    env_file:
+      - Backend/.env
+  - Path: Frontend/docker-compose.yml
+    env_file:
+      - Frontend/.env
