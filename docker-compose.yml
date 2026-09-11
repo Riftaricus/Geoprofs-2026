@@ -1,7 +1,3 @@
-include: 
+include:
   - path: Backend/docker-compose.yml
-    env_file:
-      - Backend/.env
-  - Path: Frontend/docker-compose.yml
-    env_file:
-      - Frontend/.env
+  - path: Frontend/docker-compose.yml
