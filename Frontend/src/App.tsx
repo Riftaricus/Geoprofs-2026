@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router';
+
+import Login from './pages/login';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-
-    </>
+    <div className='h-screen w-screen bg-[#0E3A5B] '>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
