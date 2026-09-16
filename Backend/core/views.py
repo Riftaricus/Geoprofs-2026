@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from core.serializers import Audit_Log_Serializer, Audit_Log
 
+from datetime import datetime
+
 @api_view(["GET"])
 def audit_logs(request):
     if request.method == "GET":
@@ -10,3 +12,11 @@ def audit_logs(request):
         serializer = Audit_Log_Serializer(logs, many=True)
 
         return Response(serializer.data)
+
+@api_view(["GET"])
+def status(request):
+    if request.method == "GET":
+        return Response({
+            "healthy": True,
+            "timestamp": datetime.now()
+        })
