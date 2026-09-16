@@ -23,5 +23,6 @@ from core import views
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path("audit_logs/", views.audit_logs)
+    path("audit_logs/", views.audit_logs),
+    path("status/", views.status)
 ]
