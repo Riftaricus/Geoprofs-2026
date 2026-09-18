@@ -2,9 +2,14 @@ from rest_framework import permissions, viewsets
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
-from core.serializers import Audit_Log_Serializer, Audit_Log, Leave_Serializer, Leave
 
 from datetime import datetime
+
+from api_geoprofs.models.audit_log import Audit_Log
+from api_geoprofs.serializers.audit_log_serializer import Audit_Log_Serializer
+
+from api_geoprofs.models.leave import Leave
+from api_geoprofs.serializers.leave_serializer import Leave_Serializer
 
 @api_view(["GET"])
 def audit_logs(request):
