@@ -24,5 +24,6 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path("audit_logs/", views.audit_logs),
+    path("leaves/", views.leaves),
     path("status/", views.status)
 ]
