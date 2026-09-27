@@ -1,14 +1,88 @@
 import { DashboardLayout } from "../../components/layout/DashboardLayout";
+import { PieChart } from '@mui/x-charts/PieChart';
+
+const settings = {
+  margin: { right: 5 },
+  width: 200,
+  height: 200,
+  hideLegend: true,
+};
+
+const mockUser = {
+  fname: "John",
+  lname: "Doe",
+  leave: [
+    { label: 'Gebruikt', value: 30, color: '#ff0000' },
+    { label: 'Over', value: 70, color: '#00C49F' }
+  ],
+  shift: {
+    dateTime: new Date(2026, 8, 30, 9, 0)
+  }
+}
 
 export function WorkerPage() {
+  const curDate = new Date()
+
+  function ShiftDiff(shift: Date) {
+    const MS_PER_HOUR = 1000 * 60 * 60;
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const MS_PER_WEEK = MS_PER_DAY * 7;
+
+    let ms: [string, string, number][] = [
+      ["weken", "week", MS_PER_WEEK],
+      ["dagen", "dag", MS_PER_DAY],
+      ["uur", "uur", MS_PER_HOUR]
+    ]
+
+    const posixShift = Date.UTC(shift.getFullYear(), shift.getMonth(), shift.getDate(), shift.getHours());
+    const posixCurrent = Date.UTC(curDate.getFullYear(), curDate.getMonth(), curDate.getDate(), curDate.getHours());
+
+    let diff = Math.abs(posixShift - posixCurrent);
+
+    return ms.map(([more, one, millis]) => {
+      const result = Math.floor(diff / millis);
+      diff %= millis;
+
+      return {
+        unit: result == 1 ? one : more,
+        result,
+      };
+    });
+  }
+
+  const shiftDiff = ShiftDiff(mockUser.shift.dateTime);
+
   return (
     <DashboardLayout role="worker">
-      <div className="h-full rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-[#0E3A5B]">
-          Werknemers dashboard
-        </h1>
+      <div className="h-full flex flex-col justify-around items-center w-full rounded-xl border border-slate-200 bg-[#F3F4F6] p-6 shadow-sm">
+        <div className="w-full h-fit m-2 flex justify-center">
+          <h1 className="text-2xl h-fit font-semibold text-[#0E3A5B]">
+            Welkom op je dashboard {mockUser.fname} {mockUser.lname}.
+          </h1>
+        </div>
 
-        <p className="mt-2 text-slate-500">Welkom op je dashboard.</p>
+        <div className="w-8/10 h-2/5 flex justify-between">
+          <div className="w-1/4 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
+            <PieChart
+              series={[{ innerRadius: 50, outerRadius: 100, data: mockUser.leave, arcLabel: 'value' }]}
+              {...settings}
+            />
+          </div>
+
+          <div className="w-1/4 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
+            {
+              shiftDiff.map(({ unit, result }) => {
+                return <p>{result} {unit}</p>;
+              })
+            }
+            <p>Voor je volgende dienst</p>
+          </div>
+        </div>
+
+        <div className="w-8/10 h-2/5 rounded-2xl bg-[#eae9e9] border border-slate-200">
+
+        </div>
+
       </div>
     </DashboardLayout>
   );
