@@ -1,4 +1,5 @@
 from django.db import models
+from api_geoprofs.models.account import Account
 
 class Leave(models.Model):
     class LeaveStatus(models.TextChoices):
@@ -6,7 +7,7 @@ class Leave(models.Model):
         ACCEPTED = "accepted"
         DENIED = "denied"
 
-    #user = models.ForeignKey()
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()

@@ -50,12 +50,10 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({"token": token.key})
 
-@api_view(["GET"])
-@permission_classes([permissions.IsAuthenticated])
-from api_geoprofs.models.leave_balance import LeaveBalance
 from api_geoprofs.serializers.leave_balance_serializer import Leave_Balance_Serializer
 
 @api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
 def audit_logs(request):
     if request.method == "GET":
         logs = Audit_Log.objects.all()
