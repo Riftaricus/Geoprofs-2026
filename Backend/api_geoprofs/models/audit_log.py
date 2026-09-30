@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class Audit_Log(models.Model):
+class AuditLog(models.Model):
     comment = models.CharField(max_length=100)
     timestamp = models.DateTimeField()
     log_type = models.CharField(max_length=100)

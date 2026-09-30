@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from api_geoprofs.models.audit_log import Audit_Log
+from api_geoprofs.models import AuditLog
 
-class Audit_Log_Serializer(serializers.HyperlinkedModelSerializer):
+class AuditLogSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Audit_Log
+        model = AuditLog
         fields = ["comment", "timestamp", "log_type"]
