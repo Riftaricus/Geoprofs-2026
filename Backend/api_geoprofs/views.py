@@ -16,6 +16,9 @@ from api_geoprofs.serializers.audit_log_serializer import Audit_Log_Serializer
 from api_geoprofs.models.leave import Leave
 from api_geoprofs.serializers.leave_serializer import Leave_Serializer
 
+from api_geoprofs.models.notification import Notification
+from api_geoprofs.serializers.notification_serializer import Notification_Serializer
+
 from api_geoprofs import functions
 
 @api_view(["POST"])
@@ -60,6 +63,21 @@ def audit_logs(request):
         serializer = Audit_Log_Serializer(logs, many=True)
 
         return Response(serializer.data)
+
+@api_view(["GET", "POST"])
+@permission_classes([permissions.IsAuthenticated])
+def notifications(request):
+    if request.method == "GET":
+        notifications = Notification.objects.all().filter(user_id=request.user.id)
+        serializer = Notification_Serializer(notifications, many=True)
+
+        return Response(serializer.data)
+    if request.method == "POST":
+        serializer = Notification_Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
