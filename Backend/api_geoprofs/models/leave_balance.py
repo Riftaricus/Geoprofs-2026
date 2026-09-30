@@ -1,8 +1,11 @@
 from django.db import models
-from api_geoprofs.models.account import Account
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 class LeaveBalance(models.Model):
     total_balance = models.IntegerField()
     used_balance = models.IntegerField()
 
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, default=-1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
