@@ -1,5 +1,5 @@
 from datetime import datetime
-from api_geoprofs.models.audit_log import Audit_Log
+from api_geoprofs.models.audit_log import AuditLog
 
 
 def log(comment: str) -> bool:
@@ -12,6 +12,6 @@ def log(comment: str) -> bool:
     if comment.__len__() >= 100:
         return False
 
-    log = Audit_Log(comment=comment, timestamp=timestamp)
+    log = AuditLog(comment=comment, timestamp=timestamp)
     log.save()
     return True

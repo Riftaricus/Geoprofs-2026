@@ -1,30 +1,28 @@
-from django.contrib.auth import authenticate
 from rest_framework import permissions, status as drf_status
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import permissions, viewsets
-from rest_framework.decorators import api_view
-from rest_framework import status
 from rest_framework.response import Response
 
 from datetime import datetime
 
-from api_geoprofs.serializers.auth_serializer import Login_Serializer, Register_Serializer
-from api_geoprofs.models.audit_log import Audit_Log
-from api_geoprofs.serializers.audit_log_serializer import Audit_Log_Serializer
-
-from api_geoprofs.models.leave import Leave
-from api_geoprofs.serializers.leave_serializer import Leave_Serializer
-
-from api_geoprofs.models.notification import Notification
-from api_geoprofs.serializers.notification_serializer import Notification_Serializer
+from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, UserData
+from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, UserDataSerializer
 
 from api_geoprofs import functions
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def user_data(request):
+    data = UserData.objects.filter(user=request.user)
+    serializer = UserDataSerializer(data, many=True)
+    return Response(serializer.data)
+    
 
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def register(request):
-    serializer = Register_Serializer(data=request.data)
+    serializer = RegisterSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     
     functions.log(f'User {request.user.id} ({request.user.email}) created new account with email: {serializer.validated_data["email"]}')
@@ -36,7 +34,7 @@ def register(request):
 
 @api_view(["POST"])
 def login(request):
-    serializer = Login_Serializer(data=request.data)
+    serializer = LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
     user = authenticate(
@@ -53,14 +51,12 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({"token": token.key})
 
-from api_geoprofs.serializers.leave_balance_serializer import Leave_Balance_Serializer
-
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def audit_logs(request):
     if request.method == "GET":
-        logs = Audit_Log.objects.all()
-        serializer = Audit_Log_Serializer(logs, many=True)
+        logs = AuditLog.objects.all()
+        serializer = AuditLogSerializer(logs, many=True)
 
         return Response(serializer.data)
 
@@ -69,11 +65,11 @@ def audit_logs(request):
 def notifications(request):
     if request.method == "GET":
         notifications = Notification.objects.all().filter(user_id=request.user.id)
-        serializer = Notification_Serializer(notifications, many=True)
+        serializer = NotificationSerializer(notifications, many=True)
 
         return Response(serializer.data)
     if request.method == "POST":
-        serializer = Notification_Serializer(data=request.data)
+        serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
@@ -84,11 +80,11 @@ def notifications(request):
 def leaves(request):
     if request.method == "GET":
         leaves = Leave.objects.all()
-        serializer = Leave_Serializer(leaves, many=True)
+        serializer = LeaveSerializer(leaves, many=True)
 
         return Response(serializer.data)
     if request.method == "POST":
-        serializer = Leave_Serializer(data=request.data)
+        serializer = LeaveSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
@@ -98,11 +94,11 @@ def leaves(request):
 def leave_balances(request):
     if request.method == "GET":
         leaves = LeaveBalance.objects.all()
-        serializer = Leave_Balance_Serializer(leaves, many=True)
+        serializer = LeaveBalanceSerializer(leaves, many=True)
 
         return Response(serializer.data)
     if request.method == "POST":
-        serializer = Leave_Balance_Serializer(data=request.data)
+        serializer = LeaveBalanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
