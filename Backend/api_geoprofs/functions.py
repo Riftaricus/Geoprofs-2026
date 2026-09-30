@@ -1,6 +1,5 @@
 from datetime import datetime
-from api_geoprofs.models.audit_log import Audit_Log
-from api_geoprofs.models.notification import Notification
+from api_geoprofs.models import AuditLog, Notification
 
 def log(comment: str, user_id: int) -> bool:
     timestamp = datetime.now()
@@ -12,7 +11,7 @@ def log(comment: str, user_id: int) -> bool:
     if comment.__len__() >= 100:
         return False
 
-    log = Audit_Log(comment=comment, timestamp=timestamp)
+    log = AuditLog(comment=comment, timestamp=timestamp)
     log.save()
     return True
 
