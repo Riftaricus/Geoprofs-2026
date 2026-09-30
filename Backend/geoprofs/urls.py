@@ -19,13 +19,13 @@ from django.urls import path
 from rest_framework import routers
 from django.urls import include, path
 
-from api_geoprofs.views import audit_logs, leaves, status, leave_balances
-
+from api_geoprofs.views import audit_logs, leaves, login, register, status, leave_balances, status
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    path("auth/register/", register),
+    path("auth/login/", login),
     path("audit_logs/", audit_logs),
     path("leaves/", leaves),
-    path("status/", status),
-    path("leave/balance/", leave_balances)
+    path("status/", status)
 ]

@@ -1,5 +1,5 @@
 from datetime import datetime
-from models import Audit_Log
+from api_geoprofs.models.audit_log import Audit_Log
 
 
 def log(comment: str) -> bool:
