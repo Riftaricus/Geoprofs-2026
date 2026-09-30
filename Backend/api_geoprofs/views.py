@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate
 from rest_framework import permissions, status as drf_status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions, viewsets
+from rest_framework.decorators import api_view
+from rest_framework import status
 from rest_framework.response import Response
 
 from datetime import datetime
@@ -49,6 +52,10 @@ def login(request):
 
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
+from api_geoprofs.models.leave_balance import LeaveBalance
+from api_geoprofs.serializers.leave_balance_serializer import Leave_Balance_Serializer
+
+@api_view(["GET"])
 def audit_logs(request):
     if request.method == "GET":
         logs = Audit_Log.objects.all()
@@ -69,7 +76,22 @@ def leaves(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=drf_status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET", "POST"])
+def leave_balances(request):
+    if request.method == "GET":
+        leaves = LeaveBalance.objects.all()
+        serializer = Leave_Balance_Serializer(leaves, many=True)
+
+        return Response(serializer.data)
+    if request.method == "POST":
+        serializer = Leave_Balance_Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(["GET"])
 def status(request):
     if request.method == "GET":
