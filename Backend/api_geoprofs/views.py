@@ -11,6 +11,9 @@ from api_geoprofs.serializers.audit_log_serializer import Audit_Log_Serializer
 from api_geoprofs.models.leave import Leave
 from api_geoprofs.serializers.leave_serializer import Leave_Serializer
 
+from api_geoprofs.models.leave_balance import LeaveBalance
+from api_geoprofs.serializers.leave_balance_serializer import Leave_Balance_Serializer
+
 @api_view(["GET"])
 def audit_logs(request):
     if request.method == "GET":
@@ -32,6 +35,21 @@ def leaves(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET", "POST"])
+def leave_balances(request):
+    if request.method == "GET":
+        leaves = LeaveBalance.objects.all()
+        serializer = Leave_Balance_Serializer(leaves, many=True)
+
+        return Response(serializer.data)
+    if request.method == "POST":
+        serializer = Leave_Balance_Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(["GET"])
 def status(request):
     if request.method == "GET":
