@@ -6,7 +6,7 @@ class Leave(models.Model):
         ACCEPTED = "accepted"
         DENIED = "denied"
 
-    #user = models.ForeignKey()
+    user = models.ForeignKey(to='account.id', on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()
