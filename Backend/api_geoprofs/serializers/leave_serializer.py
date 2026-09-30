@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from api_geoprofs.models.leave import Leave
+from api_geoprofs.models import Leave
 
-class Leave_Serializer(serializers.HyperlinkedModelSerializer):
+class LeaveSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Leave
         fields = ["user_id", "start_date", "end_date", "reason", "status", "comment"]
