@@ -7,6 +7,7 @@ import {
 import { ManagerPage } from "./pages/dashboard/ManagerPage";
 import { WorkerPage } from "./pages/dashboard/WorkerPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { PlanningPage } from "./pages/planning/PlanningPage";
 import Login from "../src/pages/login";
 
 type UserRole = "manager" | "worker";
@@ -63,7 +64,7 @@ function App() {
 
       <Route
         path="/planning"
-        element={<div>Planning</div>}
+        element={<PlanningPage/>}
       />
 
       <Route
