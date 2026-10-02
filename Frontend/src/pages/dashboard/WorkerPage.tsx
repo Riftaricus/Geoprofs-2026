@@ -1,3 +1,4 @@
+import { BrowserView, MobileView } from "react-device-detect";
 import { DashboardLayout } from "../../components/layout/DashboardLayout";
 import { PieChart } from '@mui/x-charts/PieChart';
 
@@ -8,6 +9,12 @@ const settings = {
   hideLegend: true,
 };
 
+const colors = Object.freeze({
+  rejected: "#ff0000",
+  pending: "#ffff00",
+  accepted: "#00ff00",
+});
+
 const mockUser = {
   fname: "John",
   lname: "Doe",
@@ -16,7 +23,13 @@ const mockUser = {
     { label: 'Over', value: 70, color: '#00C49F' }
   ],
   shift: {
-    dateTime: new Date(2026, 8, 30, 9, 0)
+    dateTime: new Date(2026, 10, 30, 9, 0)
+  },
+  notifications: {
+    messages: {
+      message: "Verlofaanvraag #241 afgewezen",
+      color: ""
+    }
   }
 }
 
@@ -25,7 +38,7 @@ export function WorkerPage() {
 
   function ShiftDiff(shift: Date) {
     const MS_PER_HOUR = 1000 * 60 * 60;
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const MS_PER_DAY = MS_PER_HOUR * 24;
     const MS_PER_WEEK = MS_PER_DAY * 7;
 
     let ms: [string, string, number][] = [
@@ -61,26 +74,34 @@ export function WorkerPage() {
           </h1>
         </div>
 
-        <div className="w-8/10 h-2/5 flex justify-between">
-          <div className="w-1/4 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
+        <div className="w-8/10 h-2/5 flex justify-center gap-x-10">
+          <div className="w-1/3 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
             <PieChart
               series={[{ innerRadius: 50, outerRadius: 100, data: mockUser.leave, arcLabel: 'value' }]}
-              {...settings}
             />
           </div>
 
-          <div className="w-1/4 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
-            {
-              shiftDiff.map(({ unit, result }) => {
-                return <p>{result} {unit}</p>;
-              })
-            }
-            <p>Voor je volgende dienst</p>
+          <div className="w-1/3 h-full rounded-2xl bg-[#eae9e9] border border-slate-200">
+            <div className="w-full h-full m-2 gap-y-2 flex flex-col justify-center items-center">
+              {
+                shiftDiff.map(({ unit, result }) => {
+                  if (result > 0) {
+                    return <p className="text-3xl"><b>{result}</b> {unit}</p>;
+                  }
+                })
+              }
+              <div>
+                <p className="text-3xl">Voor/Tot je volgende dienst</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="w-8/10 h-2/5 rounded-2xl bg-[#eae9e9] border border-slate-200">
-
+          {/* notif component */}
+          {
+            mockUser.notifications.map()
+          }
         </div>
 
       </div>
