@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from api_geoprofs.models.leave_balance import LeaveBalance
+from api_geoprofs.models import LeaveBalance
 
-class Leave_Balance_Serializer(serializers.HyperlinkedModelSerializer):
+class LeaveBalanceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LeaveBalance
         fields = ["user_id", "total_balance", "used_balance"]
