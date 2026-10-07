@@ -4,7 +4,7 @@ from api_geoprofs.serializers.leave_balance_serializer import LeaveBalanceSerial
 from api_geoprofs.serializers.leave_serializer import LeaveSerializer
 from api_geoprofs.serializers.notification_serializer import NotificationSerializer
 from api_geoprofs.serializers.planning_item_serializer import PlanningItemSerializer
-from api_geoprofs.serializers.user_data import UserDataSerializer
+from api_geoprofs.serializers.user_data_serializer import UserDataSerializer
 
 __all__ = [
     "AuditLogSerializer",
