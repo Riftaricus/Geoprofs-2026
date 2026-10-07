@@ -39,4 +39,4 @@ dist-ssr
 *.sw?
 
 # Environment secrets
-*.env
+.env
