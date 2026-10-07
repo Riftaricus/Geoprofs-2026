@@ -6,8 +6,8 @@ from rest_framework.response import Response
 
 from datetime import datetime
 
-from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, UserData
-from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, UserDataSerializer
+from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, PlanningItem, UserData
+from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, PlanningItemSerializer, UserDataSerializer
 
 from api_geoprofs import functions
 
@@ -103,6 +103,22 @@ def leave_balances(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET", "POST"])
+@permission_classes([permissions.IsAuthenticated])
+def planning_items(request):
+    if request.method == "GET":
+        items = PlanningItem.objects.filter(user=request.user)
+        serializer = PlanningItemSerializer(items, many=True)
+        return Response(serializer.data)
+
+    serializer = PlanningItemSerializer(
+        data=request.data,
+        context={"request": request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save(user=request.user)
+    return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
     
 @api_view(["GET"])
 def status(request):
