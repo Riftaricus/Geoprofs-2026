@@ -1,6 +1,6 @@
 export type PlanningView = "day" | "week" | "month";
 
-export type PlanningItemType = "work" | "leave";
+export type PlanningItemType = "work" | "leave" | "break";
 
 export type LeaveStatus = "pending" | "accepted" | "denied";
 

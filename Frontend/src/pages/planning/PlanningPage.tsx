@@ -12,8 +12,8 @@ import {
 import { nl } from "date-fns/locale/nl";
 
 import { DashboardLayout } from "../../components/layout/DashboardLayout";
-import { getPlanning } from "../../api/planning/get";
-
+// import { getPlanning } from "../../api/planning/get";
+import { planningMock } from "./planning.mock";
 import { PlanningCalendar } from "./components/PlanningCalendar";
 import { PlanningDetails } from "./components/PlanningDetails";
 import { PlanningHeader } from "./PlanningHeader";
@@ -39,35 +39,37 @@ export function PlanningPage() {
     getDateKey(new Date()),
   );
 
-  //bevat de planning die vanuit de backend wordt opgehaald.
-  const [items, setItems] = useState<PlanningItem[]>([]);
+  // //bevat de planning die vanuit de backend wordt opgehaald.
+  // const [items, setItems] = useState<PlanningItem[]>([]);
 
-  //houdt bij of de planning nog wordt geladen
-  const [loading, setLoading] = useState(true);
+  // //houdt bij of de planning nog wordt geladen
+  // const [loading, setLoading] = useState(true);
 
-  //bevat een eventuele fout tijdens het ophalen van de planning
-  const [error, setError] = useState<string | null>(null);
+  // //bevat een eventuele fout tijdens het ophalen van de planning
+  // const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadPlanning() {
-      try {
-        setLoading(true);
-        setError(null);
+  // useEffect(() => {
+  //   async function loadPlanning() {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
 
-        //haalt de planning op vanuit de backend
-        const data = await getPlanning();
+  //       //haalt de planning op vanuit de backend
+  //       const data = await getPlanning();
 
-        setItems(data);
-      } catch (error) {
-        console.error(error);
-        setError("Planning kon niet worden geladen :(");
-      } finally {
-        setLoading(false);
-      }
-    }
+  //       setItems(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setError("Planning kon niet worden geladen :(");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-    loadPlanning();
-  }, []);
+  //   loadPlanning();
+  // }, []);
+
+  const [items] = useState<PlanningItem[]>(planningMock);
 
   //bepaalt de titel bovenaan de pagina op basis van de actieve weergave
   const title = useMemo(() => {
@@ -195,26 +197,26 @@ export function PlanningPage() {
   };
 
   //toon een laadmelding zolang de backend nog antwoordt
-  if (loading) {
-    return (
-      <DashboardLayout role="worker">
-        <div className="flex min-h-full items-center justify-center">
-          <p className="text-sm text-slate-500">Planning laden...</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <DashboardLayout role="worker">
+  //       <div className="flex min-h-full items-center justify-center">
+  //         <p className="text-sm text-slate-500">Planning laden...</p>
+  //       </div>
+  //     </DashboardLayout>
+  //   );
+  // }
 
   //toont een fout als het ophalen mislukt
-  if (error) {
-    return (
-      <DashboardLayout role="worker">
-        <div className="flex min-h-full items-center justify-center">
-          <p className="text-sm text-red-500">{error}</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <DashboardLayout role="worker">
+  //       <div className="flex min-h-full items-center justify-center">
+  //         <p className="text-sm text-red-500">{error}</p>
+  //       </div>
+  //     </DashboardLayout>
+  //   );
+  // }
 
   return (
     <DashboardLayout role="worker">
