@@ -19,7 +19,7 @@ from django.urls import path
 from rest_framework import routers
 from django.urls import include, path
 
-from api_geoprofs.views import audit_logs, leaves, login, register, status, leave_balances, notifications, user_data
+from api_geoprofs.views import audit_logs, leaves, login, planning_items, register, status, leave_balances, notifications, user_data
 router = routers.DefaultRouter()
 
 urlpatterns = [
@@ -30,4 +30,5 @@ urlpatterns = [
     path("leaves/", leaves),
     path("status/", status),
     path("notifications/", notifications),
+    path("planning-items/", planning_items),
 ]
