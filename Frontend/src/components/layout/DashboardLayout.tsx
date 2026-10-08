@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
+import type { RoleType } from "../../api/user/model";
 
 type DashboardLayoutProps = {
-  role: "manager" | "worker";
+  // role: "manager" | "worker";
+  role: RoleType;
   children: ReactNode;
 };
 

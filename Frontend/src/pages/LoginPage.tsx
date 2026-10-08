@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { User } from "../api/user/model";
 
 export default function Login() {
     const [error, setError] = useState("");
@@ -23,6 +24,13 @@ export default function Login() {
         } else {
             // temp alert until login endpoints
             setError("");
+            const data = {first_name:"test", last_name:"test", email:"test", phone_number:"testt", profile_photo: null, leave_saldo:1};
+            const role = "manager"
+            
+            const user = User.getConcreteUserClass(
+                data, //hier komt userData van de database
+                role // de rol word ook van de database gehaald
+            );
             alert(`username: ${event.target.username.value}\npassword: ${event.target.password.value}`)
         }
     }
