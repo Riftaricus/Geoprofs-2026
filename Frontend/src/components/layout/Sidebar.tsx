@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import type { RoleType } from "../../api/user/model";
 import { Manager } from "../../api/manager/model";
 
 import {
@@ -11,6 +10,7 @@ import {
   User,
   Users,
 } from "lucide-react";
+import type { RoleType } from "../../api/user/factory";
 
 type SidebarProps = {
   // role: "manager" | "worker";
