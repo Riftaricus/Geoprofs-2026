@@ -8,7 +8,7 @@ import { ManagerPage } from "./pages/dashboard/ManagerPage";
 import { WorkerPage } from "./pages/dashboard/WorkerPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { PlanningPage } from "./pages/planning/PlanningPage";
-import Login from "../src/pages/login";
+import Login from "./pages/LoginPage";
 
 type UserRole = "manager" | "worker";
 
