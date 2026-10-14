@@ -9,7 +9,7 @@ type LeaveType = TeamPresence;
 type MessageType = {
   reason_sm: string;
   subject: string;
-  status: string | null;
+  status?: string | null;
 }
 
 interface UserData {
