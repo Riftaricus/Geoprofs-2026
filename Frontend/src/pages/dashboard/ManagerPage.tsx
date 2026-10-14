@@ -9,7 +9,8 @@ import {
   Users,
 } from "lucide-react";
 
-
+// template manager, ga ik later vervangen met de models die zijn gemaakt
+// en dan ook de backend link implementeren
 const mockMan = {
   fname: "John",
   lname: "Doe",
