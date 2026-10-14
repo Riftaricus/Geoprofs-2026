@@ -91,8 +91,7 @@ export function ManagerPage() {
             <div className="h-9/10 w-full flex justify-center items-center">
               <div className='h-9/10 w-9/10 grid grid-cols-3 grid-rows-2 justify-items-center items-center'>
                 {
-                  managerNavigation.map(({ label, path, icon }) => {
-                    const Icon = icon;
+                  managerNavigation.map(({ label, path, icon:Icon }) => {
                     return (
                       <div className="bg-[#d4d0d078] shadow-md hover:border hover:border-[#9c9c9c] rounded-2xl h-8/10 w-9/10">
                         <NavLink key={label} to={path} className={"h-full flex flex-col items-center justify-center"}>

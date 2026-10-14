@@ -1,21 +1,21 @@
 import { NavLink } from "react-router";
 
 type NotificationType = {
-    reason_sm?: string | undefined,
+    reason_sm?: string,
     subject: string
 }
 
-type MotificationProps = {
+type NotificationProps = {
     message: NotificationType
 }
 
-export function NotificationManager({ message }: MotificationProps) {
-    return (
+export function NotificationManager({ message }: NotificationProps) {
+    return(
         <div className="max-h-[15vh] w-full p-2 grid grid-cols-3 rounded-2xl text-center text-xl place-items-center bg-[#d4d0d078]">
             <p>{message.subject}</p>
 
             {
-                message.reason_sm ?? <p>{message.reason_sm}</p>
+                <p>{message.reason_sm || "geen reden"}</p>
             }
 
             <NavLink className="h-fit w-fit" to={"/beoordeel"}>
