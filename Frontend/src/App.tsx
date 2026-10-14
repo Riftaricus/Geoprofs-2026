@@ -16,7 +16,7 @@ function App() {
   //dit is even om te testen als je manager bent
   //als je het anders wil verander de role naar "worker"
   //kan btw later weg :)
-  const role = "worker" as UserRole;
+  const role = "manager" as UserRole;
 
   return (
     <Routes>
