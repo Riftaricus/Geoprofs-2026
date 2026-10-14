@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import { Manager } from "../../api/manager/model";
 
 import {
   BarChart3,
@@ -10,11 +9,9 @@ import {
   User,
   Users,
 } from "lucide-react";
-import type { RoleType } from "../../api/user/factory";
 
 type SidebarProps = {
-  // role: "manager" | "worker";
-  role:RoleType;
+  role: "manager" | "worker";
 };
 
 const managerNavigation = [
@@ -67,7 +64,7 @@ const baseLinkClasses =
   "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors";
 
 export function Sidebar({ role }: SidebarProps) {
-  const navigation = role == Manager ? managerNavigation : workerNavigation;
+  const navigation = role == "manager" ? managerNavigation : workerNavigation;
 
   return (
     <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-[#0E3A5B] p-4 text-white">
