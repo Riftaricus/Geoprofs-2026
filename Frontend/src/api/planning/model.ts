@@ -6,6 +6,6 @@ export type PlanningApiItem = {
   project_id?: number | null;
   project_name?: string | null;
   description?: string | null;
-  type: "work" | "leave";
+  type: "work" | "leave" | "break";
   leave_status?: "pending" | "accepted" | "denied" | null;
 };

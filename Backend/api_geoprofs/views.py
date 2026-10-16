@@ -10,7 +10,37 @@ from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, Pla
 from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, PlanningItemSerializer, UserDataSerializer
 
 from api_geoprofs import functions
+from django.conf import settings 
+from django.contrib.auth import get_user_model, login 
+from django.http import JsonResponse 
+from django.views.decorators.http import require_GET
 
+User = get_user_model()
+
+@require_GET
+def dev_login(request):
+    if not settings.DEBUG:
+        return JsonResponse(
+            {"error": "Alleen beschikbaar in development."},
+            status=403,
+        )
+
+    user = User.objects.filter(username="seed_user1").first()
+
+    if user is None:
+        return JsonResponse(
+            {"error": "Testgebruiker bestaat niet. Voer eerst de seeder uit."},
+            status=404,
+        )
+
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+
+    return JsonResponse({
+        "message": "Development login succesvol",
+        "is_authenticated": request.user.is_authenticated,
+        "username": user.get_username(),
+    })
+    
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def user_data(request):
