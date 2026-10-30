@@ -103,13 +103,13 @@ def notifications(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def leaves(request):
     if request.method == "GET":
-        leaves = Leave.objects.all()
+        leaves = Leave.objects.all().filter(user_id=request.user.id)
         serializer = LeaveSerializer(leaves, many=True)
 
         return Response(serializer.data)
@@ -118,12 +118,12 @@ def leaves(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 def leave_balances(request):
     if request.method == "GET":
-        leaves = LeaveBalance.objects.all()
+        leaves = LeaveBalance.objects.all().filter(user_id=request.user.id)
         serializer = LeaveBalanceSerializer(leaves, many=True)
 
         return Response(serializer.data)
@@ -131,14 +131,14 @@ def leave_balances(request):
         serializer = LeaveBalanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=health.HTTP_201_CREATED)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def planning_items(request):
     if request.method == "GET":
-        items = PlanningItem.objects.filter(user=request.user)
+        items = PlanningItem.objects.all().filter(user_id=request.user.id)
         serializer = PlanningItemSerializer(items, many=True)
         return Response(serializer.data)
 
@@ -151,7 +151,7 @@ def planning_items(request):
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
     
 @api_view(["GET"])
-def status(request):
+def health(request):
     if request.method == "GET":
         return Response({
             "healthy": True,
