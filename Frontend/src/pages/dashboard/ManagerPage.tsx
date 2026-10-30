@@ -78,7 +78,7 @@ export function ManagerPage() {
       <div className="h-full flex flex-col justify-around items-center w-full rounded-xl border border-slate-200 bg-[#F3F4F6] p-6 shadow-sm">
         {
           popUp &&
-          <PopUp>
+          <PopUp closerCallback={setPopUp}>
             <div className='w-9/10 h-8/10 flex justify-center items-center'>
               <div className='w-full h-full flex flex-col items-center p-2'>
                 <p className='text-lg text-center'>Weet je het zeker dat je jezelf wilt ziekmelden?</p>
