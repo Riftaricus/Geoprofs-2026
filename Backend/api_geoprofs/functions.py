@@ -1,8 +1,8 @@
-from datetime import datetime
+import datetime
 from api_geoprofs.models import AuditLog, Notification
 
 def log(comment: str, user_id: int = None) -> bool:
-    timestamp = datetime.now()
+    timestamp = datetime.datetime.now(datetime.timezone.utc)
 
     if timestamp == None:
         return False
