@@ -16,7 +16,7 @@ def log(comment: str, user_id: int = None) -> bool:
     return True
 
 def notify(title: str, description: str, user_id: int) -> bool:
-    timestamp = datetime.now()
+    timestamp = datetime.datetime.now(datetime.timezone.utc)
 
     if timestamp == None:
         return False
