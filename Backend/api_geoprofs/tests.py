@@ -25,8 +25,6 @@ class UserTestCase(TestCase):
     def setUp(self):
         self.user = get_user_model()
 
-        # self.user.objects.create(password="Test", username="Bob", email="Tro")
-
         data = {"password": "Testing1234", "email": "tro@gmail.com"}
 
         serializer = RegisterSerializer(data=data)
