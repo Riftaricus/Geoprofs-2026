@@ -44,6 +44,7 @@ class UserTestCase(TestCase):
         self.assertIsNotNone(user.date_joined)
     def tearDown(self):
         self.user.objects.all().delete()
+
 class NotificationTestCase(TestCase):
     def setUp(self):
         self.user = get_user_model()
@@ -62,8 +63,6 @@ class NotificationTestCase(TestCase):
         notification = Notification.objects.get(id=1)
         self.assertEqual(notification.title, "Test")
         self.assertEqual(notification.description, "This is a test notification")
+
         self.assertEqual(notification.user.email, "tro@gmail.com")
-
-
-
-
+        self.assertNotEqual(notification.user.password, "Testing1234")
