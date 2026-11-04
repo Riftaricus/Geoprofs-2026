@@ -1,19 +1,35 @@
-from rest_framework import permissions, status as drf_status
+from datetime import datetime
+
+from django.conf import settings
+from django.contrib.auth import authenticate, get_user_model
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from rest_framework import permissions
+from rest_framework import status as drf_status
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from datetime import datetime
-
-from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, PlanningItem, UserData
-from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, PlanningItemSerializer, UserDataSerializer
-
 from api_geoprofs import functions
-from django.conf import settings 
-from django.contrib.auth import get_user_model, login 
-from django.http import JsonResponse 
-from django.views.decorators.http import require_GET
+from api_geoprofs.models import (
+    AuditLog,
+    Leave,
+    LeaveBalance,
+    Notification,
+    PlanningItem,
+    UserData,
+)
+from api_geoprofs.permissions import role_permission_required
+from api_geoprofs.serializers import (
+    AuditLogSerializer,
+    LeaveBalanceSerializer,
+    LeaveSerializer,
+    LoginSerializer,
+    NotificationSerializer,
+    PlanningItemSerializer,
+    RegisterSerializer,
+    UserDataSerializer,
+)
 
 User = get_user_model()
 
@@ -97,6 +113,7 @@ def login(request):
     return Response({"token": token.key})
 
 
+@role_permission_required("audit_logs.read")
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def audit_logs(request):
@@ -119,13 +136,13 @@ def notifications(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def leaves(request):
     if request.method == "GET":
-        leaves = Leave.objects.all()
+        leaves = Leave.objects.all().filter(user_id=request.user.id)
         serializer = LeaveSerializer(leaves, many=True)
 
         return Response(serializer.data)
@@ -134,12 +151,12 @@ def leaves(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 def leave_balances(request):
     if request.method == "GET":
-        leaves = LeaveBalance.objects.all()
+        leaves = LeaveBalance.objects.all().filter(user_id=request.user.id)
         serializer = LeaveBalanceSerializer(leaves, many=True)
 
         return Response(serializer.data)
@@ -147,8 +164,8 @@ def leave_balances(request):
         serializer = LeaveBalanceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=health.HTTP_201_CREATED)
+        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
@@ -168,7 +185,7 @@ def planning_items(request):
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
     
 @api_view(["GET"])
-def status(request):
+def health(request):
     if request.method == "GET":
         return Response({
             "healthy": True,

@@ -1,12 +1,12 @@
-from datetime import datetime
+import datetime
 from api_geoprofs.models import AuditLog, Notification
 
-def log(comment: str, user_id: int) -> bool:
-    timestamp = datetime.now()
+def log(comment: str, user_id: int = None) -> bool:
+    timestamp = datetime.datetime.now(datetime.timezone.utc)
 
     if timestamp == None:
         return False
-    if comment == None or user_id == None:
+    if comment == None:
         return False
     if comment.__len__() >= 100:
         return False
@@ -16,7 +16,7 @@ def log(comment: str, user_id: int) -> bool:
     return True
 
 def notify(title: str, description: str, user_id: int) -> bool:
-    timestamp = datetime.now()
+    timestamp = datetime.datetime.now(datetime.timezone.utc)
 
     if timestamp == None:
         return False
