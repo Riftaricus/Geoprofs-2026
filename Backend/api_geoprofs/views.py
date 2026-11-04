@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from datetime import datetime
 
 from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, PlanningItem, UserData
+from api_geoprofs.permissions import role_permission_required
 from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, PlanningItemSerializer, UserDataSerializer
 
 from api_geoprofs import functions
@@ -81,6 +82,7 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({"token": token.key})
 
+@role_permission_required("audit_logs.read")
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def audit_logs(request):
