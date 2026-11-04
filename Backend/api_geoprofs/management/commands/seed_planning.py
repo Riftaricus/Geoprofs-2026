@@ -40,11 +40,8 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f"Seeder succesvol uitgevoerd voor {len(users)} gebruikers."))
 
+    
     def seed_users(self):
-        """
-        Maak drie testgebruikers aan als ze nog niet bestaan.
-        Bestaande gebruikers worden behouden.
-        """
         test_users = [
             {
                 "username": "seed_user1",
@@ -61,6 +58,11 @@ class Command(BaseCommand):
                 "email": "seed_user3@example.com",
                 "password": "TestPassword123!",
             },
+            {
+                "username": "test",
+                "email": "test@example.com",
+                "password": "test1!",
+            },
         ]
 
         users = []
@@ -68,22 +70,29 @@ class Command(BaseCommand):
         for data in test_users:
             user, created = User.objects.get_or_create(
                 username=data["username"],
-                defaults={
-                    "email": data["email"],
-                },
+                defaults={"email": data["email"]},
             )
 
-            if created:
-                user.set_password(data["password"])
-                user.save()
+            user.email = data["email"]
+            user.set_password(data["password"])
+            user.is_active = True
+            user.save()
 
-                self.stdout.write(self.style.SUCCESS(f"Gebruiker aangemaakt: {user.username}"))
+            if created:
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Gebruiker aangemaakt: {user.username}"
+                    )
+                )
             else:
-                self.stdout.write(f"Gebruiker bestaat al: {user.username}")
+                self.stdout.write(
+                    f"Testgebruiker bijgewerkt: {user.username}"
+                )
 
             users.append(user)
 
         return users
+
 
     def make_datetime(self, date, hour, minute=0):
         """

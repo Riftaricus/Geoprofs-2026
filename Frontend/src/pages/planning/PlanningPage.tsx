@@ -48,25 +48,24 @@ export function PlanningPage() {
   //bevat een eventuele fout tijdens het ophalen van de planning
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadPlanning() {
-      try {
-        setLoading(true);
-        setError(null);
+  const refreshPlanning = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        //haalt de planning op vanuit de backend
-        const data = await getPlanning();
+      const data = await getPlanning();
 
-        setItems(data);
-      } catch (error) {
-        console.error(error);
-        setError("Planning kon niet worden geladen :(");
-      } finally {
-        setLoading(false);
-      }
+      setItems(data);
+    } catch (error) {
+      console.error(error);
+      setError("Planning kon niet worden geladen :(");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    loadPlanning();
+  useEffect(() => {
+    refreshPlanning();
   }, []);
 
   //bepaalt de titel bovenaan de pagina op basis van de actieve weergave

@@ -5,12 +5,10 @@ export function mapPlanningItem(item: PlanningApiItem): PlanningItem {
   return {
     id: item.id,
     userId: item.user_id,
-    date: item.date,
+    date: item.time_start.slice(0, 10),
+    startTime: item.time_start,
+    endTime: item.time_end,
     title: item.title,
-    projectId: item.project_id ?? undefined,
-    projectName: item.project_name ?? undefined,
-    description: item.description ?? undefined,
-    type: item.type,
-    leaveStatus: item.leave_status ?? undefined,
+    type: item.item_type,
   };
 }

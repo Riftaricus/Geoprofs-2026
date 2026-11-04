@@ -1,11 +1,9 @@
 export type PlanningApiItem = {
   id: number;
   user_id: number;
-  date: string;
   title: string;
-  project_id?: number | null;
-  project_name?: string | null;
-  description?: string | null;
-  type: "work" | "leave" | "break";
-  leave_status?: "pending" | "accepted" | "denied" | null;
+  time_start: string;
+  time_end: string;
+  item_type: "work" | "leave" | "break";
+  leave_id: number | null;
 };

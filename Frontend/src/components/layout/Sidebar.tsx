@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 import {
   BarChart3,
@@ -9,6 +9,8 @@ import {
   User,
   Users,
 } from "lucide-react";
+import { useAuth } from "../../auth/AuthContext";
+import { useState } from "react";
 
 type SidebarProps = {
   role: "manager" | "worker";
@@ -65,6 +67,19 @@ const baseLinkClasses =
 
 export function Sidebar({ role }: SidebarProps) {
   const navigation = role == "manager" ? managerNavigation : workerNavigation;
+  const [loggingOut, setLoggingOut] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    setLoggingOut(true);
+
+    try {
+      await logout();
+    } finally {
+      navigate("/login", { replace: true });
+    }
+  }
 
   return (
     <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-[#0E3A5B] p-4 text-white">
@@ -152,6 +167,8 @@ export function Sidebar({ role }: SidebarProps) {
 
         <button
           type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
           className={`${baseLinkClasses} w-full text-left text-blue-50 hover:bg-white/10 hover:text-white`}
         >
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-blue-100">
