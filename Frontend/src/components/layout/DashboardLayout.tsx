@@ -8,11 +8,11 @@ type DashboardLayoutProps = {
 
 export function DashboardLayout({ role, children }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#F3F4F6] text-slate-900">
-      <div className="flex min-h-screen">
+    <div className="min-h-dvh bg-[#F3F4F6] text-slate-900">
+      <div className="flex min-h-dvh max-h-dvh">
         <Sidebar role={role} />
 
-        <main className="max-h-screen flex-1 p-6">{children}</main>
+        <main className="max-h-dhv flex-1 p-6">{children}</main>
       </div>
     </div>
   );
