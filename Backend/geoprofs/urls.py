@@ -14,21 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.urls import path
+
 from api_geoprofs.views import (
     audit_logs,
     health,
     leaves,
     login,
+    logout,
     notifications,
     planning_items,
     register,
     user_data,
+    leave_balances,
 )
-from django.urls import path
-from rest_framework import routers
-
-from api_geoprofs.views import audit_logs, leaves, login, planning_items, register, status, leave_balances, notifications, user_data, logout
-router = routers.DefaultRouter()
 
 urlpatterns = [
     path("auth/register/", register),
@@ -37,6 +36,7 @@ urlpatterns = [
     path("user", user_data),
     path("audit_logs/", audit_logs),
     path("leaves/", leaves),
+    path("leave_balances/", leave_balances),
     path("status/", health),
     path("notifications/", notifications),
     path("planning-items/", planning_items),
