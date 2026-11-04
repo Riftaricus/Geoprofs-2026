@@ -62,24 +62,40 @@ def register(request):
     return Response({"token": token.key}, status=drf_status.HTTP_201_CREATED)
 
 
+
 @api_view(["POST"])
+@permission_classes([permissions.AllowAny])
 def login(request):
     serializer = LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    user = authenticate(
-        username=serializer.validated_data["email"],
-        password=serializer.validated_data["password"],
-    )
-    
+    email = serializer.validated_data["email"].strip()
+    password = serializer.validated_data["password"]
+
+    user = User.objects.filter(email__iexact=email).first()
+
     if user is None:
         return Response(
-            {"detail": "Invalid email or password."},
+            {"detail": "Gebruiker met dit e-mailadres bestaat niet."},
+            status=drf_status.HTTP_401_UNAUTHORIZED,
+        )
+
+    if not user.check_password(password):
+        return Response(
+            {"detail": "Het wachtwoord is onjuist."},
+            status=drf_status.HTTP_401_UNAUTHORIZED,
+        )
+
+    if not user.is_active:
+        return Response(
+            {"detail": "Dit account is gedeactiveerd."},
             status=drf_status.HTTP_401_UNAUTHORIZED,
         )
 
     token, _ = Token.objects.get_or_create(user=user)
+
     return Response({"token": token.key})
+
 
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
@@ -139,13 +155,14 @@ def leave_balances(request):
 def planning_items(request):
     if request.method == "GET":
         items = PlanningItem.objects.filter(user=request.user)
+
+        print("Ingelogde gebruiker:", request.user.id, request.user.email)
+        print("Aantal planningitems:", items.count())
+
         serializer = PlanningItemSerializer(items, many=True)
         return Response(serializer.data)
 
-    serializer = PlanningItemSerializer(
-        data=request.data,
-        context={"request": request},
-    )
+    serializer = PlanningItemSerializer(data=request.data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     serializer.save(user=request.user)
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
@@ -157,3 +174,9 @@ def status(request):
             "healthy": True,
             "timestamp": datetime.now()
         })
+        
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def logout(request):
+    request.user.auth_token.delete()
+    return Response(status=drf_status.HTTP_204_NO_CONTENT)

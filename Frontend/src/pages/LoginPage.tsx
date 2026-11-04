@@ -1,53 +1,102 @@
-import { useState } from "react";
+
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Login() {
-    const [error, setError] = useState("");
-    const [tries, setTries] = useState(0);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-    function onSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-        event.preventDefault();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-        if (tries == 3){
-            // simulate lockout logic, refresh alows for retries as of now
-            alert("try again later");
-            return
-        }
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
 
-        setTries(tries + 1);
-
-        let username: string = event.target.username.value;
-        let password: string = event.target.password.value;
-
-        if (username == "" || password == "") {
-            setError("Username or password empty");
-        } else {
-            // temp alert until login endpoints
-            setError("");
-            alert(`username: ${event.target.username.value}\npassword: ${event.target.password.value}`)
-        }
+    if (!email.trim() || !password) {
+      setError("Vul je e-mailadres en wachtwoord in.");
+      return;
     }
 
-    return (
-        <div className="h-full w-full flex justify-center items-center">
-            <div className='h-[50%] w-[40%] flex justify-center items-center rounded-2xl bg-[#0b2e48]'>
-                <form className="flex flex-col items-center justify-around w-[80%] h-[90%]" method="POST" onSubmit={(e) => { onSubmit(e) }}>
-                    <img className="rounded-2xl" src="https://placehold.co/600x400" alt="placeholder" />
+    setLoading(true);
 
-                    {
-                        error ? <p className="text-red-600 text-xl">{error}</p> : <p></p>
-                    }
+    try {
+      await login(email, password);
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Inloggen is mislukt.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
-                    <div className="h-[20%] w-[90%] flex flex-col justify-around text-xl">
-                        <input className="w-full h-[40%] text-black bg-[#F3F4F6] rounded-full pl-2 focus:border-0 focus:outline-0" type="text" name="username" placeholder="Gebruikersnaam" />
-                        <input className="w-full h-[40%] text-black bg-[#F3F4F6] rounded-full pl-2 focus:border-0 focus:outline-0" type="password" name="password" placeholder="Wachtwoord" />
-                    </div>
+  return (
+    <div className="min-h-screen w-full flex justify-center items-center p-4">
+      <div className="w-full max-w-lg rounded-2xl bg-[#0b2e48] p-8">
+        <form
+          onSubmit={onSubmit}
+          className="flex flex-col items-center gap-6"
+        >
+          <h1 className="text-3xl font-bold text-white">
+            Inloggen
+          </h1>
 
-                    <div className="h-[10%] w-[90%] flex justify-between items-center">
-                        <button className="w-[45%] h-[80%] bg-[#3FB950] rounded-full text-black text-xl" type="submit">Login</button>
-                        <button className="w-[45%] h-[80%] bg-[#2b8036] rounded-full text-black text-xl" type="submit">Forgot</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    )
+          {error && (
+            <p role="alert" className="w-full text-red-300">
+              {error}
+            </p>
+          )}
+
+          <div className="flex w-full flex-col gap-4">
+            <label className="w-full text-white">
+              E-mailadres
+              <input
+                className="mt-2 w-full rounded-full bg-[#F3F4F6] p-3 text-black"
+                type="email"
+                autoComplete="username"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+            </label>
+
+            <label className="w-full text-white">
+              Wachtwoord
+              <input
+                className="mt-2 w-full rounded-full bg-[#F3F4F6] p-3 text-black"
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </label>
+          </div>
+
+          <button
+            className="w-full rounded-full bg-[#3FB950] p-3 text-black disabled:opacity-50"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Bezig met inloggen..." : "Login"}
+          </button>
+
+          <button
+            className="text-white underline"
+            type="button"
+            onClick={() => navigate("/forgot-password")}
+          >
+            Wachtwoord vergeten?
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

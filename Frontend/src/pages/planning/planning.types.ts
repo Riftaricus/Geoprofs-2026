@@ -9,6 +9,8 @@ export type PlanningItem = {
   id: number;
   userId: number;
   date: string;
+  startTime: string;
+  endTime: string;
   title: string;
   projectId?: number;
   projectName?: string;
