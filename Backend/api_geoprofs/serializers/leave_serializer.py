@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from api_geoprofs.models import Leave
+
 
 class LeaveSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

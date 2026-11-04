@@ -1,20 +1,35 @@
-from rest_framework import permissions, status as drf_status
+from datetime import datetime
+
+from django.conf import settings
+from django.contrib.auth import authenticate, get_user_model
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from rest_framework import permissions
+from rest_framework import status as drf_status
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from datetime import datetime
-
-from api_geoprofs.models import AuditLog, Leave, LeaveBalance, Notification, PlanningItem, UserData
-from api_geoprofs.permissions import role_permission_required
-from api_geoprofs.serializers import LoginSerializer, RegisterSerializer, AuditLogSerializer, LeaveSerializer, NotificationSerializer, LeaveBalanceSerializer, PlanningItemSerializer, UserDataSerializer
-
 from api_geoprofs import functions
-from django.conf import settings 
-from django.contrib.auth import get_user_model, login 
-from django.http import JsonResponse 
-from django.views.decorators.http import require_GET
+from api_geoprofs.models import (
+    AuditLog,
+    Leave,
+    LeaveBalance,
+    Notification,
+    PlanningItem,
+    UserData,
+)
+from api_geoprofs.permissions import role_permission_required
+from api_geoprofs.serializers import (
+    AuditLogSerializer,
+    LeaveBalanceSerializer,
+    LeaveSerializer,
+    LoginSerializer,
+    NotificationSerializer,
+    PlanningItemSerializer,
+    RegisterSerializer,
+    UserDataSerializer,
+)
 
 User = get_user_model()
 

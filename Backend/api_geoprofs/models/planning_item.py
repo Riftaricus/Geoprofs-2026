@@ -3,7 +3,6 @@ from django.db import models
 
 from api_geoprofs.models.leave import Leave
 
-
 User = get_user_model()
 
 
