@@ -1,13 +1,11 @@
 from datetime import datetime, time, timedelta
 
+from api_geoprofs.models.leave import Leave
+from api_geoprofs.models.planning_item import PlanningItem
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
-
-from api_geoprofs.models.leave import Leave
-from api_geoprofs.models.planning_item import PlanningItem
-
 
 User = get_user_model()
 

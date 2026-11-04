@@ -1,13 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
+
+from api_geoprofs.functions import log, notify
 
 # Create your tests here.
-from django.test import TestCase
 from api_geoprofs.models import AuditLog, Notification
-from api_geoprofs.functions import log, notify
-from django.contrib.auth import get_user_model
-
 from api_geoprofs.serializers import RegisterSerializer
-from rest_framework.authtoken.models import Token
+
 
 class AuditLogTestCase(TestCase):
     def setUp(self):
@@ -30,8 +29,7 @@ class UserTestCase(TestCase):
         serializer = RegisterSerializer(data=data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
+        serializer.save()
         
     def test_user_exists(self):
         user = self.user.objects.get(username="tro@gmail.com")
@@ -53,7 +51,6 @@ class NotificationTestCase(TestCase):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
 
         notify("Test", "This is a test notification", user.id)
         
