@@ -34,8 +34,7 @@ if SECRET_KEY == None:
 DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS",
-    "localhost,127.0.0.1,django-web"
+    "DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,django-web"
 ).split(",")
 
 # Application definition
@@ -143,6 +142,7 @@ MAILERS = {
 }
 
 REST_FRAMEWORK = {
+    # Auth
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
@@ -150,5 +150,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    # Throttling
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "30/min", "user": "60/min"},
 }
-

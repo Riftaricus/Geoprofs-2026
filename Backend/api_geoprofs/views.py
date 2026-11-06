@@ -185,6 +185,7 @@ def planning_items(request):
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
     
 @api_view(["GET"])
+@permission_classes([permissions.AllowAny])
 def health(request):
     if request.method == "GET":
         return Response({
