@@ -4,6 +4,7 @@ import { ManagerPage } from "./pages/dashboard/ManagerPage";
 import { WorkerPage } from "./pages/dashboard/WorkerPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { PlanningPage } from "./pages/planning/PlanningPage";
+import { LeaveRequestPage } from "./pages/leave/LeaveRequestPage";
 import Login from "./pages/LoginPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/profiel" element={<ProfilePage />} />
         <Route path="/projecten" element={<div>Projecten</div>} />
         <Route path="/planning" element={<PlanningPage />} />
+        <Route path="/verlof/aanvragen" element={<LeaveRequestPage />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

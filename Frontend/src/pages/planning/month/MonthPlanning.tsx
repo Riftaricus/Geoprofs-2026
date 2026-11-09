@@ -16,6 +16,8 @@ type MonthPlanningProps = {
   currentDate: Date;
   items: PlanningItem[];
   selectedDate: string;
+  rangeStart?: string;
+  rangeEnd?: string;
 
   onDateClick: (date: string) => void;
 };
@@ -26,6 +28,8 @@ export function MonthPlanning({
   currentDate,
   items,
   selectedDate,
+  rangeStart = "",
+  rangeEnd = "",
   onDateClick,
 }: MonthPlanningProps) {
   //bepaalt het begin en einde van de maand
@@ -84,13 +88,22 @@ export function MonthPlanning({
             //filtert de planning voor deze specifieke dag
             const dayItems = items.filter((item) => item.date == dateKey);
 
+            const isRangeEdge = dateKey == rangeStart || dateKey == rangeEnd;
+
+            const isInRange =
+              Boolean(rangeStart) &&
+              Boolean(rangeEnd) &&
+              dateKey > rangeStart &&
+              dateKey < rangeEnd;
+
             return (
               <MonthDayCell
                 key={dateKey}
                 date={date}
                 items={dayItems}
                 isCurrentMonth={isSameMonth(date, currentDate)}
-                isSelected={dateKey == selectedDate}
+                isSelected={dateKey == selectedDate || isRangeEdge}
+                isInRange={isInRange}
                 onClick={onDateClick}
               />
             );

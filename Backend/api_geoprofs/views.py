@@ -20,10 +20,13 @@ from api_geoprofs.models import (
     UserData,
 )
 from api_geoprofs.permissions import role_permission_required
+from api_geoprofs.services.leave_balance import get_leave_summary
 from api_geoprofs.serializers import (
     AuditLogSerializer,
     LeaveBalanceSerializer,
     LeaveSerializer,
+    LeaveRequestSerializer,
+    LeaveSummarySerializer,
     LoginSerializer,
     NotificationSerializer,
     PlanningItemSerializer,
@@ -142,16 +145,27 @@ def notifications(request):
 @permission_classes([permissions.IsAuthenticated])
 def leaves(request):
     if request.method == "GET":
-        leaves = Leave.objects.all().filter(user_id=request.user.id)
-        serializer = LeaveSerializer(leaves, many=True)
+        leaves = Leave.objects.filter(user=request.user).order_by("-start_date")
+        serializer = LeaveRequestSerializer(leaves, many=True)
 
         return Response(serializer.data)
-    if request.method == "POST":
-        serializer = LeaveSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
+
+    serializer = LeaveRequestSerializer(
+        data=request.data,
+        context={"request": request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+
+    return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def leave_summary(request):
+    serializer = LeaveSummarySerializer(get_leave_summary(request.user))
+
+    return Response(serializer.data)
 
 @api_view(["GET", "POST"])
 def leave_balances(request):
@@ -185,7 +199,6 @@ def planning_items(request):
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
     
 @api_view(["GET"])
-@permission_classes([permissions.AllowAny])
 def health(request):
     if request.method == "GET":
         return Response({

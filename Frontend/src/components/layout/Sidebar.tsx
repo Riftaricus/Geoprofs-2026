@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router";
 import {
   BarChart3,
   CalendarDays,
+  CalendarPlus,
   FolderKanban,
   LayoutDashboard,
   LogOut,
@@ -38,6 +39,11 @@ const managerNavigation = [
     icon: CalendarDays,
   },
   {
+    label: "Verlof aanvragen",
+    path: "/verlof/aanvragen",
+    icon: CalendarPlus,
+  },
+  {
     label: "Rapporten",
     path: "/rapporten",
     icon: BarChart3,
@@ -54,6 +60,11 @@ const workerNavigation = [
     label: "Planning",
     path: "/planning",
     icon: CalendarDays,
+  },
+  {
+    label: "Verlof aanvragen",
+    path: "/verlof/aanvragen",
+    icon: CalendarPlus,
   },
   {
     label: "Projecten",

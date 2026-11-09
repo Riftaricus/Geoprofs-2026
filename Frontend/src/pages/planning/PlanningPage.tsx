@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import {
   addDays,
   addMonths,
@@ -28,6 +29,8 @@ function getDateKey(date: Date) {
 }
 
 export function PlanningPage() {
+  const navigate = useNavigate();
+
   //bepaalt welke planningweergave actief is
   const [view, setView] = useState<PlanningView>("week");
 
@@ -188,9 +191,9 @@ export function PlanningPage() {
     setCurrentDate(new Date(`${date}T12:00:00`));
   };
 
-  //wordt aangeroepen wanneer de gebruiker verlof wil aanvragen.
+  //opent het verlofformulier met de geselecteerde dag alvast ingevuld
   const handleRequestLeave = () => {
-    console.log("Verlof aanvragen voor:", selectedDate);
+    navigate(`/verlof/aanvragen?date=${selectedDate}`);
   };
 
   //toon een laadmelding zolang de backend nog antwoordt
