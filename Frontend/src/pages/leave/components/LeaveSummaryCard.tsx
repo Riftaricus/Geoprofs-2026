@@ -60,7 +60,7 @@ export function LeaveSummaryCard({
         <div className="flex items-baseline justify-between">
           <dt className="text-ink-muted">Resterend saldo</dt>
           <dd className="font-semibold text-ink">
-            {available != null ? formatDays(available) : "–"}
+            {available != null ? formatDays(available) : "-"}
           </dd>
         </div>
 
@@ -69,7 +69,7 @@ export function LeaveSummaryCard({
           <dd
             className={`font-semibold ${freeAfter != null && freeAfter < 0 ? "text-danger" : "text-ink"}`}
           >
-            {freeAfter != null ? formatDays(freeAfter) : "–"}
+            {freeAfter != null ? formatDays(freeAfter) : "-"}
           </dd>
         </div>
       </dl>
