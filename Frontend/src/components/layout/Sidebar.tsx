@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import { BrowserView } from 'react-device-detect';
 
 import {
   BarChart3,
@@ -74,18 +73,16 @@ export function Sidebar({ role }: SidebarProps) {
           <span className="text-lg font-bold text-white">G</span>
         </div>
 
-        <BrowserView>
-          <div>
-            <h1 className="text-lg font-bold tracking-tight">GeoProfs</h1>
+        <div className="max-lg:hidden">
+          <h1 className="text-lg font-bold tracking-tight">GeoProfs</h1>
 
-            <p className="text-xs text-blue-100">Verlof & planning</p>
-          </div>
-        </BrowserView>
+          <p className="text-xs text-blue-100">Verlof & planning</p>
+        </div>
 
       </div>
 
       <div className="h-full">
-        <p className="max-lg:mb-0 max-lg:px-0 mb-2 px-3 text-[11px] text-center font-semibold uppercase tracking-wider text-blue-200">
+        <p className="max-lg:mb-0 max-lg:px-0 max-lg:hidden mb-2 px-3 text-[11px] text-center font-semibold uppercase tracking-wider text-blue-200">
           Menu
         </p>
 
@@ -114,9 +111,7 @@ export function Sidebar({ role }: SidebarProps) {
                     >
                       <Icon size={17} strokeWidth={1.8} />
                     </span>
-                    <BrowserView>
-                      <span>{item.label}</span>
-                    </BrowserView>
+                      <span className="max-lg:hidden">{item.label}</span>
                   </>
                 )}
               </NavLink>
@@ -145,9 +140,7 @@ export function Sidebar({ role }: SidebarProps) {
               >
                 <User size={17} strokeWidth={1.8} />
               </span>
-              <BrowserView>
-                <span>Profiel</span>
-              </BrowserView>
+                <span className="max-lg:hidden">Profiel</span>
             </>
           )}
         </NavLink>
@@ -159,9 +152,7 @@ export function Sidebar({ role }: SidebarProps) {
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-blue-100">
             <LogOut size={17} strokeWidth={1.8} />
           </span>
-          <BrowserView>
-            <span>Uitloggen</span>
-          </BrowserView>
+            <span className="max-lg:hidden">Uitloggen</span>
         </button>
       </div>
     </aside>
