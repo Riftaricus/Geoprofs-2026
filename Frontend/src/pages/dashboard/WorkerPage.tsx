@@ -8,7 +8,6 @@ import { PopUp } from "../../components/dasboard/Popup";
 // change to +6 to test the weeks disapearing, change to 0 to see only hours
 let testDate = new Date();
 testDate = new Date(testDate.getFullYear(), testDate.getMonth(), testDate.getDate() + 12, testDate.getHours() + 7);
-console.log(testDate)
 
 // test user object to test some features on the page
 const mockUser = {
@@ -244,7 +243,7 @@ export function WorkerPage() {
         }
 
         <div className="w-full h-fit flex justify-center">
-          <h1 className="text-2xl h-fit font-semibold text-[#0E3A5B]">
+          <h1 className="text-5xl h-fit font-semibold text-[#0E3A5B]">
             Welkom op je dashboard {mockUser.fname} {mockUser.lname}.
           </h1>
         </div>
