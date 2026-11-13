@@ -12,7 +12,7 @@ export function DashboardLayout({ role, children }: DashboardLayoutProps) {
       <div className="flex min-h-dvh max-h-dvh">
         <Sidebar role={role} />
 
-        <main className="max-h-dhv flex-1 p-6">{children}</main>
+        <main className="max-h-dvh flex-1 p-6">{children}</main>
       </div>
     </div>
   );
