@@ -9,6 +9,8 @@ services:
       - NODE_ENV=production
 
   dev:
+    volumes:
+      - ./src:/app/src
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -18,11 +20,11 @@ services:
       - NODE_ENV=development
     develop:
       watch:
-        - action: sync
-          path: ./src
-          target: /app/src
-          ignore:
-            - node_modules/
+        # - action: sync
+        #   path: ./src
+        #   target: /app/src
+        #   ignore:
+        #     - node_modules/
         - action: rebuild
           path: ./package.json
           target: /app/package.json
