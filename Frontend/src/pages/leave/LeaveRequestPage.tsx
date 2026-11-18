@@ -153,7 +153,7 @@ export function LeaveRequestPage() {
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="mx-auto flex max-w-6xl flex-col gap-6"
+        className="mx-auto flex max-w-8xl flex-col gap-8"
       >
         <header>
           <p className="text-xs font-semibold uppercase tracking-wider text-info">
@@ -185,7 +185,7 @@ export function LeaveRequestPage() {
           </Banner>
         )}
 
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           <section className="flex flex-col gap-5 rounded-xl border border-line bg-white p-4 shadow-sm sm:p-8">
             <h2 className="text-lg font-semibold text-ink">
               Gegevens van je aanvraag
@@ -197,7 +197,10 @@ export function LeaveRequestPage() {
               required
               placeholder="Kies een verloftype"
               value={values.leaveType}
-              options={LEAVE_TYPES.map((type) => ({ value: type, label: type }))}
+              options={LEAVE_TYPES.map((type) => ({
+                value: type,
+                label: type,
+              }))}
               error={errors.leave_type}
               onChange={(value) => handleChange("leaveType", value)}
             />

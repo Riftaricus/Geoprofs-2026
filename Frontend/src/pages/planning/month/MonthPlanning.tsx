@@ -18,6 +18,7 @@ type MonthPlanningProps = {
   selectedDate: string;
   rangeStart?: string;
   rangeEnd?: string;
+  compact?: boolean;
 
   onDateClick: (date: string) => void;
 };
@@ -30,6 +31,7 @@ export function MonthPlanning({
   selectedDate,
   rangeStart = "",
   rangeEnd = "",
+  compact = false,
   onDateClick,
 }: MonthPlanningProps) {
   //bepaalt het begin en einde van de maand
@@ -56,25 +58,33 @@ export function MonthPlanning({
   }
 
   return (
-    <section className="min-w-0">
-      <div className="mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Maandplanning
-        </p>
+    <section
+      className={compact ? "mx-auto w-full min-w-0 max-w-md" : "min-w-0"}
+    >
+      <div className={compact ? "mb-2" : "mb-3"}>
+        {!compact && (
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Maandplanning
+          </p>
+        )}
 
-        <h2 className="mt-1 text-xl font-semibold capitalize text-[#0E3A5B]">
+        <h2
+          className={`${compact ? "text-base" : "mt-1 text-xl"} font-semibold capitalize text-[#0E3A5B]`}
+        >
           {format(currentDate, "MMMM yyyy", {
             locale: nl,
           })}
         </h2>
       </div>
 
-      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+      <div
+        className={`overflow-hidden rounded-xl bg-white ${compact ? "border border-slate-200" : "shadow-sm"}`}
+      >
         <div className="grid grid-cols-7 border-b border-slate-200">
           {weekdays.map((day) => (
             <div
               key={day}
-              className="border-r border-slate-200 px-2 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-400 last:border-r-0"
+              className={`border-r border-slate-200 px-2 ${compact ? "py-2" : "py-3"} text-center text-xs font-semibold uppercase tracking-wide text-slate-400 last:border-r-0`}
             >
               {day}
             </div>
@@ -104,6 +114,7 @@ export function MonthPlanning({
                 isCurrentMonth={isSameMonth(date, currentDate)}
                 isSelected={dateKey == selectedDate || isRangeEdge}
                 isInRange={isInRange}
+                compact={compact}
                 onClick={onDateClick}
               />
             );

@@ -77,6 +77,7 @@ export function LeavePeriodPicker({
           selectedDate={startDate}
           rangeStart={startDate}
           rangeEnd={endDate}
+          compact
           onDateClick={handleDateClick}
         />
       </div>
@@ -84,8 +85,8 @@ export function LeavePeriodPicker({
       {/* de gekozen periode, zodat je die ook op een telefoon meteen ziet */}
       {startDate && endDate && (
         <p className="text-sm font-medium text-ink">
-          Gekozen: {format(parseISO(startDate), "d MMM yyyy", { locale: nl })} t/m{" "}
-          {format(parseISO(endDate), "d MMM yyyy", { locale: nl })}
+          Gekozen: {format(parseISO(startDate), "d MMM yyyy", { locale: nl })}{" "}
+          t/m {format(parseISO(endDate), "d MMM yyyy", { locale: nl })}
         </p>
       )}
 
