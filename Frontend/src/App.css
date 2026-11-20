@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* Design tokens uit het GeoProfs Verlof design system 1.0 */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Geo-blue (primary) */
+  --color-geo-800: #0e3a5b;
+  --color-geo-900: #0b2e48;
+
+  /* Tekst */
+  --color-ink: #122f43;
+  --color-ink-muted: #516473;
+
+  /* Vlakken en lijnen */
+  --color-canvas: #f3f4f6;
+  --color-surface-subtle: #eaf1f6;
+  --color-line: #cbd5dc;
+  --color-control: #718091;
+  --color-disabled: #e2e7eb;
+  --color-disabled-ink: #5b6b78;
+  --color-focus: #176b9e;
+
+  /* Status */
+  --color-success: #176b32;
+  --color-success-bg: #e9f6ec;
+  --color-warning: #805500;
+  --color-warning-bg: #fff2d6;
+  --color-danger: #ae2634;
+  --color-danger-bg: #fde9ec;
+  --color-info: #155c88;
+  --color-info-bg: #e8f3fc;
+}

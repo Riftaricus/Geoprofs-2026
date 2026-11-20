@@ -1,5 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "";
 
+//fout van de API, met de status en de body van het antwoord erbij zodat
+//pagina's veldfouten (bijv. validatie van een formulier) kunnen tonen
+export class ApiError extends Error {
+  status: number;
+  body: unknown;
+
+  constructor(message: string, status: number, body: unknown) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export function getToken(): string | null {
   return localStorage.getItem("auth_token");
 }
@@ -38,7 +52,11 @@ export async function apiFetch<T>(
   if (!response.ok) {
     const body = await response.json().catch(() => null);
 
-    throw new Error(body?.detail ?? `API-fout: ${response.status}`);
+    throw new ApiError(
+      body?.detail ?? `API-fout: ${response.status}`,
+      response.status,
+      body,
+    );
   }
 
   if (response.status == 204) {
