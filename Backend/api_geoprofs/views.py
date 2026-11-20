@@ -74,14 +74,12 @@ def user_data(request):
 
 @role_permission_required({
     "GET": "roles.read",
-    "HEAD": "roles.read",
-    "OPTIONS": "roles.read",
     "POST": "roles.create",
 })
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def roles(request):
-    if request.method in ("GET", "HEAD"):
+    if request.method == "GET":
         role_list = Role.objects.prefetch_related("permissions").order_by("role_name")
         serializer = RoleSerializer(role_list, many=True)
         return Response(serializer.data)
@@ -94,13 +92,10 @@ def roles(request):
 
 @role_permission_required({
     "GET": "roles.read",
-    "HEAD": "roles.read",
-    "OPTIONS": "roles.read",
     "PUT": "roles.update",
-    "PATCH": "roles.update",
     "DELETE": "roles.delete",
 })
-@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 @permission_classes([permissions.IsAuthenticated])
 def role_detail(request, role_id):
     role = get_object_or_404(
@@ -108,28 +103,30 @@ def role_detail(request, role_id):
         pk=role_id,
     )
 
-    if request.method in ("GET", "HEAD"):
+    if request.method == "GET":
         serializer = RoleSerializer(role)
         return Response(serializer.data)
 
-    if request.method in ("PUT", "PATCH"):
+    if request.method == "PUT":
         serializer = RoleSerializer(
             role,
             data=request.data,
-            partial=request.method == "PATCH",
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
-    try:
-        role.delete()
-    except ProtectedError:
-        return Response(
-            {"detail": "Cannot delete a role while users are assigned to it."},
-            status=drf_status.HTTP_409_CONFLICT,
-        )
-    return Response(status=drf_status.HTTP_204_NO_CONTENT)
+    if request.method == "DELETE":
+        try:
+            role.delete()
+        except ProtectedError:
+            return Response(
+                {"detail": "Cannot delete a role while users are assigned to it."},
+                status=drf_status.HTTP_409_CONFLICT,
+            )
+        return Response(status=drf_status.HTTP_204_NO_CONTENT)
+
+    return Response(status=drf_status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(["POST"])
