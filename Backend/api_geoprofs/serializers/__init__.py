@@ -7,6 +7,7 @@ from api_geoprofs.serializers.planning_item_serializer import PlanningItemSerial
 from api_geoprofs.serializers.user_data_serializer import UserDataSerializer
 from api_geoprofs.serializers.leave_summary_serializer import LeaveSummarySerializer
 from api_geoprofs.serializers.leave_request_serializer import LeaveRequestSerializer
+from api_geoprofs.serializers.role_serializer import RoleSerializer
 
 __all__ = [
     "AuditLogSerializer",
@@ -18,5 +19,6 @@ __all__ = [
     "NotificationSerializer",
     "PlanningItemSerializer",
     "RegisterSerializer",
+    "RoleSerializer",
     "UserDataSerializer"
 ]

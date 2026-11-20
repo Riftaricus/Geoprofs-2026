@@ -25,6 +25,8 @@ from api_geoprofs.views import (
     notifications,
     planning_items,
     register,
+    role_detail,
+    roles,
     user_data,
     leave_balances,
     leave_summary,
@@ -42,4 +44,6 @@ urlpatterns = [
     path("status/", health),
     path("notifications/", notifications),
     path("planning-items/", planning_items),
+    path("roles/", roles),
+    path("roles/<uuid:role_id>/", role_detail),
 ]
