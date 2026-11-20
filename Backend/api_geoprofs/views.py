@@ -60,6 +60,7 @@ def dev_login(request):
         "username": user.get_username(),
     })
     
+@role_permission_required("user_data.read")
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def user_data(request):
@@ -68,6 +69,7 @@ def user_data(request):
     return Response(serializer.data)
     
 
+@role_permission_required("users.create")
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def register(request):
@@ -126,6 +128,10 @@ def audit_logs(request):
 
         return Response(serializer.data)
 
+@role_permission_required({
+    "GET": "notifications.read",
+    "POST": "notifications.create",
+})
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def notifications(request):
@@ -141,6 +147,10 @@ def notifications(request):
             return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
         return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
+@role_permission_required({
+    "GET": "leaves.read",
+    "POST": "leaves.create",
+})
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def leaves(request):
@@ -160,6 +170,7 @@ def leaves(request):
     return Response(serializer.data, status=drf_status.HTTP_201_CREATED)
 
 
+@role_permission_required("leave_balances.read")
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def leave_summary(request):
@@ -167,7 +178,12 @@ def leave_summary(request):
 
     return Response(serializer.data)
 
+@role_permission_required({
+    "GET": "leave_balances.read",
+    "POST": "leave_balances.create",
+})
 @api_view(["GET", "POST"])
+@permission_classes([permissions.IsAuthenticated])
 def leave_balances(request):
     if request.method == "GET":
         leaves = LeaveBalance.objects.all().filter(user_id=request.user.id)
@@ -181,6 +197,10 @@ def leave_balances(request):
             return Response(serializer.data, status=health.HTTP_201_CREATED)
         return Response(serializer.errors, status=health.HTTP_400_BAD_REQUEST)
 
+@role_permission_required({
+    "GET": "planning_items.read",
+    "POST": "planning_items.create",
+})
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def planning_items(request):
@@ -206,6 +226,7 @@ def health(request):
             "timestamp": datetime.now()
         })
         
+@role_permission_required("auth.logout")
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def logout(request):
