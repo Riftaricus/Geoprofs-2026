@@ -3,6 +3,8 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { Notification } from "../../components/dasboard/Notification";
 import { useState } from "react";
 import { PopUp } from "../../components/dasboard/Popup";
+import { BrowserView, MobileView } from 'react-device-detect';
+
 
 // date 1 week, 5 days, 7 hours later for testing
 // change to +6 to test the weeks disapearing, change to 0 to see only hours
@@ -226,7 +228,7 @@ export function WorkerPage() {
 
   return (
     <DashboardLayout role="worker">
-      <div className="h-full flex flex-col justify-around items-center w-full rounded-xl border border-slate-200 bg-[#F3F4F6] p-6 shadow-sm">
+      <div className="h-full flex flex-col justify-around items-center w-full rounded-xl border border-slate-200 bg-canvas p-6 shadow-sm">
         {
           popUp &&
           <PopUp closerCallback={setPopUp}>
@@ -244,22 +246,27 @@ export function WorkerPage() {
         }
 
         <div className="w-full h-fit flex justify-center">
-          <h1 className="text-2xl h-fit font-semibold text-[#0E3A5B]">
+          <h1 className="text-2xl h-fit font-semibold text-geo-800">
             Welkom op je dashboard {mockUser.fname} {mockUser.lname}.
           </h1>
         </div>
 
-        <div className="w-8/10 h-2/5 flex justify-center gap-x-10">
-          <div className="w-1/3 h-full shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200">
+        <div className="mag-lg:w-full w-8/10 max-lg:h-4/10 h-2/5 flex max-lg:flex-col justify-center gap-x-10">
+          <div className="max-lg:w-full w-1/3 h-full shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200">
             <div className="w-full h-fit p-2 flex justify-center items-center text-2xl font-bold">
               <p>verlof saldo</p>
             </div>
 
             <div className="h-7/10 w-full flex justify-center items-center">
-              <PieChart
-                series={[{ innerRadius: "45%", outerRadius: "90%", data: mockUser.leave }]}
-                className="h-full w-full" hideLegend={true}
-              />
+              <MobileView>
+                <div className="h-1/10 w-5/10 bg-green-600"></div>
+              </MobileView>
+              <BrowserView>
+                <PieChart
+                  series={[{ innerRadius: "45%", outerRadius: "90%", data: mockUser.leave }]}
+                  className="h-full w-full" hideLegend={true}
+                />
+              </BrowserView>
             </div>
 
             <div className='w-full h-1/10 flex justify-center items-center'>
@@ -269,19 +276,33 @@ export function WorkerPage() {
             </div>
           </div>
 
-          <div className="w-1/3 h-full shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200">
+          <div className="max-lg:w-full w-1/3 max-lg:h-1/3 h-full shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200">
             <div className="w-full h-1/10 p-2 flex justify-center items-center text-2xl font-bold">
               <p>volgende dienst</p>
             </div>
 
             <div className="w-full h-9/10 gap-y-2 flex flex-col justify-center items-center">
-              {
-                shiftDiff.map(({ unit, result }) => {
-                  if (result > 0) {
-                    return <p className="text-3xl"><b>{result}</b> {unit}</p>;
+              <BrowserView>
+                {
+                  shiftDiff.map(({ unit, result }) => {
+                    if (result > 0) {
+                      return <p className="text-3xl"><b>{result}</b> {unit}</p>;
+                    }
+                  })
+                }
+              </BrowserView>
+              <MobileView>
+                <div className="flex justify-center items-center gap-x-2">
+                  {
+                    shiftDiff.map(({ unit, result }) => {
+                      if (result > 0) {
+                        return <p className="text-lg"><b>{result}</b> {unit}</p>;
+                      }
+                    })
                   }
-                })
-              }
+                </div>
+
+              </MobileView>
               <div>
                 <p className="text-3xl">Tot je volgende dienst</p>
               </div>
@@ -289,8 +310,8 @@ export function WorkerPage() {
           </div>
         </div>
 
-        <div className="w-full h-2/5 flex flex-col items-center shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200 overflow-y-scroll">
-          <div className="w-9/10 h-1/10 sticky top-0 py-2 grid grid-cols-3 text-center text-2xl font-bold bg-[#eae9e9]">
+        <div className="w-full max-lg:h-4/10 h-2/5 flex flex-col items-center shadow-md rounded-2xl bg-[#eae9e9] border border-slate-200 overflow-y-scroll">
+          <div className="w-9/10 h-1/10 sticky top-0 max-lg:py-1 py-2 grid grid-cols-3 text-center text-2xl font-bold bg-[#eae9e9]">
             <p>Aanvraag</p>
             <p>Reden</p>
             <p>Status</p>

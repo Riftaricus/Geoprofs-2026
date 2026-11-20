@@ -8,7 +8,7 @@ type DashboardLayoutProps = {
 
 export function DashboardLayout({ role, children }: DashboardLayoutProps) {
   return (
-    <div className="min-h-dvh bg-[#F3F4F6] text-slate-900">
+    <div className="min-h-dvh bg-canvas text-slate-900">
       <div className="flex min-h-dvh max-h-dvh">
         <Sidebar role={role} />
 

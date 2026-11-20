@@ -11,7 +11,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 type UserRole = "manager" | "worker";
 
 function App() {
-  const role = "manager" as UserRole;
+  const role = "worker" as UserRole;
 
   return (
     <Routes>

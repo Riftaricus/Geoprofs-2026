@@ -93,7 +93,7 @@ export function Sidebar({ role }: SidebarProps) {
   }
 
   return (
-    <aside id="sidebar" className="sticky top-0 flex max-h-dvh w-64 shrink-0 flex-col bg-[#0E3A5B] p-4 text-white max-lg:p-2 max-lg:w-16">
+    <aside id="sidebar" className="sticky top-0 flex max-h-dvh w-64 shrink-0 flex-col bg-geo-800 p-4 text-white max-lg:p-2 max-lg:w-16">
       <div className="mb-8 flex items-center justify-center gap-3 max-lg:p-0 px-2 py-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#3FB950] shadow-sm">
           <span className="text-lg font-bold text-white">G</span>
@@ -122,7 +122,7 @@ export function Sidebar({ role }: SidebarProps) {
                 to={item.path}
                 className={({ isActive }) =>
                   `${baseLinkClasses} ${isActive
-                    ? "bg-white text-[#0E3A5B] shadow-sm"
+                    ? "bg-white text-geo-800 shadow-sm"
                     : "text-blue-50 hover:bg-white/10 hover:text-white"
                   }`
                 }
@@ -151,7 +151,7 @@ export function Sidebar({ role }: SidebarProps) {
           to="/profiel"
           className={({ isActive }) =>
             `${baseLinkClasses} ${isActive
-              ? "bg-white text-[#0E3A5B]"
+              ? "bg-white text-geo-800"
               : "text-blue-50 hover:bg-white/10 hover:text-white"
             }`
           }
