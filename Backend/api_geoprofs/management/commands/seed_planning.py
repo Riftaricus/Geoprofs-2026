@@ -1,6 +1,7 @@
 from datetime import datetime, time, timedelta
 
 from api_geoprofs.models.leave import Leave
+from api_geoprofs.models.leave_balance import LeaveBalance
 from api_geoprofs.models.planning_item import PlanningItem
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
@@ -35,6 +36,7 @@ class Command(BaseCommand):
                 f"Planning aanmaken voor {user}..."
             )
 
+            self.seed_leave_balance(user)
             self.seed_work_items(user, today)
             self.seed_leave_items(user, today)
 
@@ -93,6 +95,16 @@ class Command(BaseCommand):
 
         return users
 
+
+    def seed_leave_balance(self, user):
+        """
+        Geef elke testgebruiker een verlofsaldo in uren
+        (200 totaal, 40 gebruikt = 160 uur resterend).
+        """
+        LeaveBalance.objects.update_or_create(
+            user=user,
+            defaults={"total_balance": 200, "used_balance": 40},
+        )
 
     def make_datetime(self, date, hour, minute=0):
         """

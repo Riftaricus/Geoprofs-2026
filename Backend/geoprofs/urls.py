@@ -27,6 +27,7 @@ from api_geoprofs.views import (
     register,
     user_data,
     leave_balances,
+    leave_summary,
 )
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     path("user", user_data),
     path("audit_logs/", audit_logs),
     path("leaves/", leaves),
+    path("leave_balances/summary/", leave_summary),
     path("leave_balances/", leave_balances),
     path("status/", health),
     path("notifications/", notifications),

@@ -30,6 +30,10 @@ export default defineConfig({
         target: "http://django-web:8000",
         changeOrigin: true,
       },
+      "/leave_balances": {
+        target: "http://django-web:8000",
+        changeOrigin: true,
+      },
       "/status": {
         target: "http://django-web:8000",
         changeOrigin: true,

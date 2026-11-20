@@ -8,6 +8,7 @@ from api_geoprofs.models.role import Role
 from api_geoprofs.models.role_permissions import RolePermissions
 from api_geoprofs.models.user_data import UserData
 from api_geoprofs.models.user_role import UserRole
+from api_geoprofs.models.leave_attachment import LeaveAttachment
 
 __all__ = [
     "AuditLog",
@@ -20,4 +21,5 @@ __all__ = [
     "RolePermissions",
     "UserData",
     "UserRole",
+    "LeaveAttachment",
 ]
