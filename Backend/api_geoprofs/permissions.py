@@ -6,6 +6,8 @@ from api_geoprofs.models import UserRole
 class HasRolePermission(BasePermission):
     def has_permission(self, request, view):
         required_permission = getattr(view, "required_role_permission", None)
+        if isinstance(required_permission, dict):
+            required_permission = required_permission.get(request.method.upper())
         if not required_permission or not request.user.is_authenticated:
             return False
 
@@ -16,7 +18,13 @@ class HasRolePermission(BasePermission):
 
 
 def role_permission_required(action):
-    if not action:
+    if isinstance(action, dict):
+        if not action or any(
+            not method or not permission
+            for method, permission in action.items()
+        ):
+            raise ValueError("A permission action is required for every HTTP method.")
+    elif not action:
         raise ValueError("A permission action is required.")
 
     def decorator(view):
