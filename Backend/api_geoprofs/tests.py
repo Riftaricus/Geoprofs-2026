@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.test import TestCase
 
 from api_geoprofs.functions import log, notify
 
 # Create your tests here.
-from api_geoprofs.models import AuditLog, Notification
+from api_geoprofs.models import AuditLog, Notification, Permission
 from api_geoprofs.serializers import RegisterSerializer
 
 
@@ -61,3 +62,19 @@ class NotificationTestCase(TestCase):
 
         self.assertEqual(notification.user.email, "tro@gmail.com")
         self.assertNotEqual(notification.user.password, "Testing1234")
+
+
+class PermissionSeederTestCase(TestCase):
+    def test_seed_permissions_creates_expected_permissions_idempotently(self):
+        call_command("seed_permissions")
+
+        self.assertSetEqual(
+            set(Permission.objects.values_list("action", flat=True)),
+            {
+                "roles.read",
+                "roles.create",
+                "roles.update",
+                "roles.delete",
+                "audit_logs.read",
+            },
+        )

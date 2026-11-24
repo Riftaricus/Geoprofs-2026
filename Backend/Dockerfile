@@ -14,4 +14,7 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py seed_planning && python manage.py runserver 0.0.0.0:8000"]
+CMD python manage.py migrate --noinput && \
+    python manage.py seed_planning && \
+    python manage.py seed_permissions && \
+    python manage.py runserver 0.0.0.0:8000
