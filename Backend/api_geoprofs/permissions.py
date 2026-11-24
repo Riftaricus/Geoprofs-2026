@@ -18,7 +18,13 @@ class HasRolePermission(BasePermission):
 
 
 def role_permission_required(action):
-    if not action:
+    if isinstance(action, dict):
+        if not action or any(
+            not method or not permission
+            for method, permission in action.items()
+        ):
+            raise ValueError("A permission action is required for every HTTP method.")
+    elif not action:
         raise ValueError("A permission action is required.")
 
     def decorator(view):
