@@ -8,13 +8,13 @@ Cypress.Commands.add("login", (email: string, password: string) => {
       cy.get('input[type="password"]').type(password);
       cy.get('button[type="submit"]').click();
 
-      cy.get(".bottom-nav").should("be.visible");
+      cy.get("aside").should("be.visible");
     },
     {
       validate() {
         cy.visit("/");
 
-        cy.get(".bottom-nav").should("be.visible");
+        cy.get("aside").should("be.visible");
       },
     },
   );
